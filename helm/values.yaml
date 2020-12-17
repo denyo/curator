@@ -28,14 +28,13 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name:
 
-
 psp:
   # Specifies whether a podsecuritypolicy should be created
   create: false
 
 image:
-  repository: untergeek/curator
-  tag: 5.7.6
+  repository: denyo/elastic-curator
+  tag: 5.8.3
   pullPolicy: IfNotPresent
 
 hooks:
@@ -49,7 +48,7 @@ command: ["/curator/curator"]
 env: {}
 
 configMaps:
-  # Delete indices older than 7 days
+  # Delete indices older than 21 days
   action_file_yml: |-
     ---
     actions:
@@ -67,7 +66,7 @@ configMaps:
           direction: older
           timestring: '%Y.%m.%d'
           unit: days
-          unit_count: 7
+          unit_count: 21
           field:
           stats_result:
           epoch:
@@ -93,7 +92,6 @@ configMaps:
     #   logfile:
     #   logformat: default
     #   blacklist: ['elasticsearch', 'urllib3']
-
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -157,4 +155,4 @@ extraInitContainers: {}
   #     }
 
 securityContext:
-  runAsUser: 16  # run as cron user instead of root
+  runAsUser: 16 # run as cron user instead of root
